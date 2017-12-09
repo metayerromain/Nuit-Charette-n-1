@@ -18,6 +18,10 @@ body {
   font-family: "Pixeled";
 }
 
+span {
+  color: OrangeRed;
+}
+
 .scoreOver {
   color: #fff;
   font-size: 40px;

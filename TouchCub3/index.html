@@ -10,30 +10,25 @@
 </head>
 
 <body>
+
   <div class="logo">
     <img src="img/logo.png" alt="">
   </div>
   <div class="firstPage">
-
     <h1>TouchCub3</h1>
     <p>Eugénie, Angéline, Léa, Théau, Réda, Romaín</p>
     <button class="button" type="button" name="button">Start</button>
   </div>
-
   <div class="timeOver">
     <h1 class="scoreOver"></h1>
     <p>GAME OVER</p>
     <button class="restart" type="button" name="button">Restart</button>
   </div>
-
   <div class="canvas">
     <div class="titleContainer">
-
       <h1 class="title"></h1>
     </div>
-
     <div class="score">0</div>
-
     <div class="squareContainer">
       <div class="lineSquare">
         <div id="1" class="square"></div>
@@ -54,6 +49,7 @@
 
 
   <script type="text/javascript">
+    //déclaration de toutes les variables nécéssaires dans le code
     var scoreOver = document.querySelector(".scoreOver");
     var score = document.querySelector(".score");
     var restart = document.querySelector(".restart")
@@ -63,6 +59,9 @@
     var timer = document.querySelector(".timer");
     var title = document.querySelector(".title");
     var squareArray = document.querySelectorAll(".square");
+    var rand;
+    var colorRandom;
+    var scored = 0;
     var tab = {
       1: '',
       2: '',
@@ -76,18 +75,16 @@
       10: ''
     };
 
-    var rand;
-    var colorRandom;
-    var scored = 0;
-
+    //gère le score
     function scores() {
       scored = scored + 1;
       score.innerHTML = scored;
-
     }
-    var startGame = function() {
+
+    function startGame() {
       generateColors();
 
+      //empèche les doublons dans les 10 cases, chaque couleur du tableau est visible
       function random(colors) {
         var colorIndex = Math.floor(Math.random() * colors.length);
         var rand = colors[colorIndex];
@@ -95,26 +92,15 @@
         return rand;
       }
 
+      //génère les 10 cases avec des couleurs aléatoires
       function generateColors() {
-        var colors = [
-          'Yellow',
-          'Green',
-          'Beige',
-          'Ketchup',
-          'Salmon',
-          'Pink',
-          'Chocolate',
-          'DarkBlue',
-          'Mint',
-          'Purple'
-        ];
+        var colors = ['Yellow', 'Green', 'Beige', 'Ketchup', 'Salmon', 'Pink', 'Chocolate', 'DarkBlue', 'Mint', 'Purple'];
         for (var i = 0; i < squareArray.length; i++) {
           tab[i] = random(colors);
           squareArray[i].className = 'square ' + tab[i];
         }
       }
-
-      //genere le titre avec la couleur
+      //genere le titre avec une couleur aléatoire
       colorRandom = Math.floor(Math.random() * 9);
       rand = Math.floor(Math.random() * 9);
       title.innerHTML = tab[rand];
@@ -122,33 +108,32 @@
 
     }
 
-
-
+    //le jeu commence
     startGame();
 
+    //gère l'évenement clic sur une case, qu'elle soit mauvaise ou non
     for (let b = 0; b < squareArray.length; b++) {
       squareArray[b].addEventListener('click', function() {
         for (var i = 0; i < squareArray.length; i++) {
-          if (tab[rand] == squareArray[b].classList[1]) {
-            console.log("cool");
+          if (tab[rand] == squareArray[b].classList[1]) { //si clic = good alors on relance le jeu avec une nouvelle couleur et on accroit le score
             scores();
             startGame();
-
             i = squareArray.length;
-          } else {
+          } else { //sinon on affiche l'overlay "Game Over";
             i = squareArray.length;
             over.style.display = "flex";
-            scoreOver.innerHTML = "score " + scored;
-            scored = 0;
+            scoreOver.innerHTML = "score: " + scored;
           }
         }
       });
     }
 
+    //évènement clic sur le bouton start de la premiere page cache la première page
     button.addEventListener('click', function() {
       firstPage.style.display = "none";
     });
 
+    //évènement clic sur le restart, cache l'overlay "Game Over", relance le jeu et le score
     restart.addEventListener('click', function() {
       over.style.display = "none";
       startGame();
