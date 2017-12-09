@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/style.css">
+  <title>TouchCub3</title>
+
+</head>
+
+<body>
+  <div class="logo">
+    <img src="img/logo.png" alt="">
+  </div>
+  <div class="firstPage">
+
+    <h1>TouchCub3</h1>
+    <p>Eugénie, Angéline, Léa, Théau, Réda, Romaín</p>
+    <button class="button" type="button" name="button">Start</button>
+  </div>
+
+  <div class="timeOver">
+    <h1 class="scoreOver"></h1>
+    <p>GAME OVER</p>
+    <button class="restart" type="button" name="button">Restart</button>
+  </div>
+
+  <div class="canvas">
+    <div class="titleContainer">
+
+      <h1 class="title"></h1>
+    </div>
+
+    <div class="score">0</div>
+
+    <div class="squareContainer">
+      <div class="lineSquare">
+        <div id="1" class="square"></div>
+        <div id="2" class="square"></div>
+        <div id="3" class="square"></div>
+        <div id="4" class="square"></div>
+        <div id="5" class="square"></div>
+      </div>
+      <div class="lineSquare">
+        <div id="6" class="square"></div>
+        <div id="7" class="square"></div>
+        <div id="8" class="square"></div>
+        <div id="9" class="square"></div>
+        <div id="10" class="square"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <script type="text/javascript">
+    var scoreOver = document.querySelector(".scoreOver");
+    var score = document.querySelector(".score");
+    var restart = document.querySelector(".restart")
+    var firstPage = document.querySelector(".firstPage");
+    var button = document.querySelector(".button");
+    var over = document.querySelector(".timeOver");
+    var timer = document.querySelector(".timer");
+    var title = document.querySelector(".title");
+    var squareArray = document.querySelectorAll(".square");
+    var tab = {
+      1: '',
+      2: '',
+      3: '',
+      4: '',
+      5: '',
+      6: '',
+      7: '',
+      8: '',
+      9: '',
+      10: ''
+    };
+
+    var rand;
+    var colorRandom;
+    var scored = 0;
+
+    function scores() {
+      scored = scored + 1;
+      score.innerHTML = scored;
+
+    }
+    var startGame = function() {
+      generateColors();
+
+      function random(colors) {
+        var colorIndex = Math.floor(Math.random() * colors.length);
+        var rand = colors[colorIndex];
+        colors.splice(colorIndex, 1);
+        return rand;
+      }
+
+      function generateColors() {
+        var colors = [
+          'Yellow',
+          'Green',
+          'Beige',
+          'Ketchup',
+          'Salmon',
+          'Pink',
+          'Chocolate',
+          'DarkBlue',
+          'Mint',
+          'Purple'
+        ];
+        for (var i = 0; i < squareArray.length; i++) {
+          tab[i] = random(colors);
+          squareArray[i].className = 'square ' + tab[i];
+        }
+      }
+
+      //genere le titre avec la couleur
+      colorRandom = Math.floor(Math.random() * 9);
+      rand = Math.floor(Math.random() * 9);
+      title.innerHTML = tab[rand];
+      title.style.color = tab[colorRandom];
+
+    }
+
+
+
+    startGame();
+
+    for (let b = 0; b < squareArray.length; b++) {
+      squareArray[b].addEventListener('click', function() {
+        for (var i = 0; i < squareArray.length; i++) {
+          if (tab[rand] == squareArray[b].classList[1]) {
+            console.log("cool");
+            scores();
+            startGame();
+
+            i = squareArray.length;
+          } else {
+            i = squareArray.length;
+            over.style.display = "flex";
+            scoreOver.innerHTML = "score " + scored;
+            scored = 0;
+          }
+        }
+      });
+    }
+
+    button.addEventListener('click', function() {
+      firstPage.style.display = "none";
+    });
+
+    restart.addEventListener('click', function() {
+      over.style.display = "none";
+      startGame();
+      score.innerHTML = 0;
+    });
+  </script>
+
+
+</body>
+
+</html>
